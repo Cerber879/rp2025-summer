@@ -65,4 +65,58 @@ public class TextUtilTest
             { "'", [] },
         };
     }
+
+    [Theory]
+    [MemberData(nameof(CountVowelsParams))]
+    public void Can_count_vowels(string input, int expected)
+    {
+        int result = TextUtil.CountVowels(input);
+        Assert.Equal(expected, result);
+    }
+
+    public static TheoryData<string, int> CountVowelsParams()
+    {
+        return new TheoryData<string, int>
+        {
+             // Примеры из задания
+            { "The quick brown fox jumps over the lazy dog", 12 },
+            { "Съешь же ещё этих мягких французских булок, да выпей чаю.", 18 },
+
+            // Английские слова
+            { "Hello", 2 },
+            { "AEIOU", 5 },        // верхний регистр
+
+            // Русские слова
+            { "Привет", 2 },
+            { "АЕЁИОУЫЭЮЯ", 10 },  // верхний регистр
+
+            // Смешанные языки
+            { "Hello Привет", 4 },
+
+            // Пограничные случаи
+            { null!, 0 },
+            { "", 0 },
+            { "   ", 0 },
+
+            // Нет гласных
+            { "bcdfghjklmnpqrstvwxz", 0 },
+            { "бвгджзклмнпрстфхцчшщ", 0 },
+
+            // Цифры, символы
+            { "12345", 0 },
+            { "!@#$%", 0 },
+
+            // Буквы + цифры
+            { "a1e2i3o4u5", 5 },
+            { "а1е2ё3и4о5", 5 },
+
+            // Апострофы, дефисы
+            { "Can't", 1 },
+            { "Что-нибудь", 3 },
+
+            // Смешанный контент
+            { "Привет! Мир?", 3 },
+            { "Hello123World", 3 },
+        };
+    }
 }
